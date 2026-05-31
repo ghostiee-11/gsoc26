@@ -1,11 +1,61 @@
-<!-- Modern web fonts: Inter (sans) + JetBrains Mono (code) -->
+<!-- Editorial type pair: Fraunces (display serif) + Newsreader (literary body) + JetBrains Mono (code) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..900,0..100,0..1&family=Newsreader:opsz,wght,ital@6..72,400..700,0;6..72,400..700,1&family=JetBrains+Mono:wght@400;500&display=swap">
 
 <!-- Favicon from GitHub avatar -->
 <link rel="icon" type="image/png" sizes="32x32" href="https://github.com/ghostiee-11.png?size=32">
 <link rel="apple-touch-icon" sizes="180x180" href="https://github.com/ghostiee-11.png?size=180">
 
-<!-- Better mobile theming -->
-<meta name="theme-color" content="#0f766e">
+<!-- Mobile browser chrome to match paper background -->
+<meta name="theme-color" content="#faf8f3">
+
+<!-- Scroll progress bar (vermillion ink) -->
+<script>
+(function () {
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  function ready(fn){ if (document.readyState !== "loading") fn(); else document.addEventListener("DOMContentLoaded", fn); }
+  ready(function () {
+    var bar = document.createElement("div");
+    bar.className = "scroll-progress";
+    document.body.insertBefore(bar, document.body.firstChild);
+    var raf = null;
+    function update() {
+      raf = null;
+      var st = window.scrollY || document.documentElement.scrollTop;
+      var h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      var p = h > 0 ? st / h : 0;
+      bar.style.transform = "scaleX(" + p + ")";
+    }
+    function onScroll() { if (raf == null) raf = requestAnimationFrame(update); }
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+  });
+})();
+</script>
+
+<!-- Reveal-on-view: fades and slides elements in once when they enter the viewport -->
+<script>
+(function () {
+  if (!("IntersectionObserver" in window)) return;
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  function ready(fn){ if (document.readyState !== "loading") fn(); else document.addEventListener("DOMContentLoaded", fn); }
+  ready(function () {
+    var els = document.querySelectorAll(".list__item, .archive__item, .page__content h2, .page__content blockquote, .home-lede");
+    els.forEach(function (el, i) {
+      el.classList.add("reveal");
+      el.style.setProperty("--reveal-delay", (Math.min(i, 8) * 60) + "ms");
+    });
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.classList.add("reveal--in");
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+    els.forEach(function (el) { io.observe(el); });
+  });
+})();
+</script>
