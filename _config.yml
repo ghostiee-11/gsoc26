@@ -38,9 +38,10 @@ footer:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/ghostiee-11/gsoc26"
-    - label: "RSS"
-      icon: "fas fa-fw fa-rss-square"
-      url: "/gsoc26/feed.xml"
+
+# Hide the theme's auto-injected RSS/Feed link in the footer
+atom_feed:
+  hide: true
 
 # Reading
 words_per_minute: 200
