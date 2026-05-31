@@ -1,7 +1,7 @@
 ---
-layout: page
 title: About
 permalink: /about/
+toc: false
 ---
 
 Hi, I am **Aman Kumar**. I am a Google Summer of Code 2026 contributor
@@ -19,3 +19,4 @@ changed my mind about.
 
 - GitHub: [@ghostiee-11](https://github.com/ghostiee-11)
 - Project home: [HoloViz Lumen](https://lumen.holoviz.org)
+- Blog source: [ghostiee-11/gsoc26](https://github.com/ghostiee-11/gsoc26)

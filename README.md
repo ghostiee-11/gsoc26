@@ -1,4 +1,4 @@
-# GSoC 2026 — Lumen + Xarray Integration
+# GSoC 2026: Lumen + Xarray Integration
 
 Biweekly blog by [Aman Kumar](https://github.com/ghostiee-11) for
 Google Summer of Code 2026 with [HoloViz](https://holoviz.org) under

@@ -1,6 +1,9 @@
 ---
 layout: home
 title: Posts
+author_profile: true
+classes: wide
+entries_layout: list
 ---
 
 Biweekly notes from my Google Summer of Code 2026 with HoloViz, under

@@ -1,28 +1,85 @@
-title: Aman Kumar — GSoC 2026
-tagline: Lumen + Xarray Integration · HoloViz (NumFOCUS)
+remote_theme: "mmistakes/minimal-mistakes@4.26.2"
+minimal_mistakes_skin: "air"   # try: default, air, aqua, contrast, dark, dirt, mint, neon, plum, sunrise
+
+title: "GSoC 2026: Lumen + Xarray"
+subtitle: "Biweekly notes by Aman Kumar"
+name: "Aman Kumar"
 description: >-
-  Biweekly notes from Google Summer of Code 2026, bringing xarray and
-  N-dimensional scientific data into Lumen.
-author:
-  name: Aman Kumar
-  github: ghostiee-11
+  Biweekly notes from Google Summer of Code 2026 with HoloViz, under
+  the NumFOCUS umbrella. Bringing xarray and N-dimensional scientific
+  data into Lumen.
 
 baseurl: "/gsoc26"
 url: "https://ghostiee-11.github.io"
+repository: "ghostiee-11/gsoc26"
+locale: "en-US"
+timezone: Asia/Kolkata
 
-theme: minima
-markdown: kramdown
+# Author sidebar
+author:
+  name: "Aman Kumar"
+  avatar: "https://github.com/ghostiee-11.png"
+  bio: "GSoC 2026 contributor at HoloViz (NumFOCUS). Working on the Lumen and xarray integration."
+  location: "India"
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/ghostiee-11"
+    - label: "HoloViz Lumen"
+      icon: "fas fa-fw fa-link"
+      url: "https://lumen.holoviz.org"
+    - label: "NumFOCUS"
+      icon: "fas fa-fw fa-globe"
+      url: "https://numfocus.org"
+
+# Footer
+footer:
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/ghostiee-11/gsoc26"
+    - label: "RSS"
+      icon: "fas fa-fw fa-rss-square"
+      url: "/gsoc26/feed.xml"
+
+# Reading
+words_per_minute: 200
 permalink: /:year/:month/:day/:title/
 
+# Plugins
 plugins:
+  - jekyll-paginate
+  - jekyll-sitemap
+  - jekyll-gist
   - jekyll-feed
+  - jekyll-include-cache
   - jekyll-seo-tag
 
-minima:
-  date_format: "%b %-d, %Y"
-  skin: auto
-  social_links:
-    - { platform: github, user_url: "https://github.com/ghostiee-11" }
+paginate: 10
+paginate_path: "/page:num/"
 
-header_pages:
-  - about.md
+# Markdown
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+  syntax_highlighter: rouge
+
+# Defaults so I don't repeat front-matter per file
+defaults:
+  - scope: { path: "", type: posts }
+    values:
+      layout: single
+      author_profile: true
+      read_time: true
+      show_date: true
+      share: true
+      related: true
+      toc: true
+      toc_sticky: true
+      classes: wide
+  - scope: { path: "", type: pages }
+    values:
+      layout: single
+      author_profile: true
+      classes: wide
