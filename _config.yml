@@ -65,6 +65,16 @@ kramdown:
   input: GFM
   hard_wrap: false
   syntax_highlighter: rouge
+  # Disable kramdown smart-typography: keep quotes straight, keep --/---/... literal
+  smart_quotes: ["apos", "apos", "quot", "quot"]
+  typographic_symbols:
+    hellip: "..."
+    mdash: "---"
+    ndash: "--"
+    laquo: "<<"
+    raquo: ">>"
+    laquo_space: "<< "
+    raquo_space: " >>"
 
 # Defaults so I don't repeat front-matter per file
 defaults:
