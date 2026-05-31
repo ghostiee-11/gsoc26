@@ -1,0 +1,194 @@
+---
+search: false
+---
+
+@charset "utf-8";
+
+@import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}";
+@import "minimal-mistakes";
+
+/* ========================================================== */
+/* Custom polish layer on top of minimal-mistakes "air" skin   */
+/* ========================================================== */
+
+$sans-modern: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+$mono-modern: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+$accent: #0f766e;        /* deep teal */
+$accent-deep: #134e4a;
+$accent-soft: rgba(15, 118, 110, 0.08);
+
+/* Typography */
+body {
+  font-family: $sans-modern;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "cv05", "cv11", "ss01";
+}
+
+h1, h2, h3, h4, h5, h6,
+.page__title,
+.archive__item-title,
+.sidebar .author__name,
+.site-title,
+.greedy-nav a {
+  font-family: $sans-modern;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+code, pre, .highlight, .highlighter-rouge {
+  font-family: $mono-modern;
+}
+
+/* Link + accent color */
+a, .page__content a:not(.btn) {
+  color: $accent;
+  transition: color 0.15s ease;
+}
+a:hover, a:focus {
+  color: $accent-deep;
+}
+
+.page__content a:not(.btn) {
+  text-decoration-color: rgba(15, 118, 110, 0.4);
+  text-underline-offset: 3px;
+}
+
+/* Top masthead */
+.masthead {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.02);
+}
+
+/* Hero overlay on posts: gradient instead of flat color */
+.page__hero--overlay {
+  background: linear-gradient(135deg, #0b3a5b 0%, #0f766e 55%, #2aa198 100%);
+  padding: 5em 0 4em;
+}
+
+.page__hero--overlay .page__title {
+  font-size: 2.3em;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.page__hero--overlay .page__meta,
+.page__hero--overlay .page__lead {
+  opacity: 0.9;
+}
+
+/* Home page: turn post listing into cards */
+.list__item,
+.entries-list .list__item {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 10px;
+  padding: 1.4em 1.6em;
+  margin-bottom: 1.2em;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.list__item:hover {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+.list__item .archive__item-title {
+  margin-top: 0;
+}
+.list__item .archive__item-excerpt {
+  color: #4b5563;
+}
+
+/* Author sidebar */
+.sidebar .author__avatar img {
+  border-radius: 50%;
+  border: 3px solid rgba(15, 118, 110, 0.18);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+.sidebar .author__name {
+  font-size: 1.05em;
+}
+
+/* Post body */
+.page__content {
+  font-size: 1.05em;
+  line-height: 1.72;
+}
+.page__content p { margin-bottom: 1.1em; }
+
+.page__content h2 {
+  margin-top: 2.2em;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+.page__content h3 {
+  margin-top: 1.8em;
+}
+
+.page__content blockquote {
+  border-left: 4px solid $accent;
+  background: $accent-soft;
+  padding: 0.8em 1.2em;
+  border-radius: 0 8px 8px 0;
+  color: #064e3b;
+}
+
+/* Inline code chip */
+.page__content code {
+  background: $accent-soft;
+  color: #064e3b;
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  font-size: 0.88em;
+}
+.page__content pre code,
+.highlight code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+}
+
+/* Code block */
+.page__content .highlighter-rouge .highlight,
+.highlighter-rouge .highlight {
+  background: #0b1f2a;
+  color: #e6edf3;
+  border-radius: 8px;
+  padding: 1em 1.1em;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+/* TOC */
+.toc {
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
+  background: #fdfdfc;
+}
+.toc .nav__title {
+  background: $accent;
+  border-radius: 8px 8px 0 0;
+}
+
+/* Tag pills */
+.page__taxonomy .page__taxonomy-item,
+.taxonomy__index a,
+.page__footer-follow .social-icons a {
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+/* Footer */
+.page__footer {
+  background: #f7f7f5;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  color: #555;
+}
+.page__footer a {
+  color: $accent-deep;
+}
+
+/* Selection */
+::selection {
+  background: rgba(15, 118, 110, 0.18);
+  color: #064e3b;
+}
