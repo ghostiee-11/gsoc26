@@ -15,3 +15,10 @@ entries_layout: list
   <span class="home-lede__sep">/</span>
   Mentors: Andrew Huang and Andy Maloney.
 </p>
+
+<p class="home-social">
+  <a class="home-social__link" href="https://www.linkedin.com/in/aman-kumar-ai/" rel="me noopener" target="_blank">
+    <i class="fab fa-fw fa-linkedin" aria-hidden="true"></i>
+    Connect on LinkedIn
+  </a>
+</p>
