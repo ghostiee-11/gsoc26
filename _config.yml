@@ -25,6 +25,9 @@ author:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/ghostiee-11"
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/aman-kumar-ai/"
     - label: "HoloViz Lumen"
       icon: "fas fa-fw fa-link"
       url: "https://lumen.holoviz.org"
@@ -84,7 +87,7 @@ defaults:
       author_profile: true
       read_time: true
       show_date: true
-      share: true
+      share: false      # no Twitter/Facebook/LinkedIn share buttons on posts
       related: true
       toc: true
       toc_sticky: true
