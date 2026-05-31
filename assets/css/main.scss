@@ -155,7 +155,9 @@ a:hover, a:focus, .page__content a:not(.btn):hover {
 .page__hero--overlay {
   position: relative;
   overflow: hidden;
-  background: var(--paper);
+  /* Override mm's inline background-color from header.overlay_color */
+  background: var(--paper) !important;
+  background-image: none !important;
   color: var(--ink);
   padding: 6em 0 4em;
   border-bottom: 1px solid var(--rule);
