@@ -204,7 +204,7 @@ not the path I happened to take.
 
 ## Thanks, and a credit I did not expect
 
-The day before merge, Alex added me to the Sponsors & Contributors
+In the days before merge, Alex added me to the Sponsors & Contributors
 section of the README. That is the kind of thing maintainers do not
 have to do, and a small line item in a README does not capture how
 much of a confidence boost it is when the person whose code you have
@@ -221,8 +221,8 @@ acknowledgements.
 This PR has my name on it but it has Alex's fingerprints all over
 it. He did the architectural framings I would have missed (lazy
 backend, no SQL parsing, smaller public surface, chunks as the
-partitioning knob), the perf rescue, and the README the day before
-merge. He also waited four review rounds with patient, specific,
+partitioning knob), the perf rescue, and the README updates that came
+with it. He also waited four review rounds with patient, specific,
 load-bearing feedback. Every "no, do this instead" was a better
 answer than what I had. The right way to thank a maintainer who does
 that is to be worth the time on the next PR too.
