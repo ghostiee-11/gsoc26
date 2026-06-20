@@ -70,17 +70,18 @@ Four lines. So why did this take six weeks and four review rounds?
 Because four lines is the part that works on toy data. Everything
 else is the part that makes a library. By the end the PR had:
 
-- **20 commits**, including two architectural rewrites
-- **Dozens of inline review comments** across four rounds with Alex
-- **7 commits Alex pushed directly to the branch** when he ran out of
-  patience explaining the chunks knob and just built it himself
-- **Three full rewrites** of the lazy backend
-- **One performance regression** I missed and Alex caught on real
-  ERA5
+- **20 commits**, 13 of mine plus 7 from Alex helping land
+  the PR
+- **Dozens of inline review comments** across four rounds
+- **Three full rewrites** of the lazy backend before it stabilized
+- **Around 700 lines** of new code in `ds.py`, plus a new test
+  module covering round-trip identity, sparsity, fill-value
+  behavior, and vectorized-indexer fallback
+- **One performance regression** I shipped and had to validate the
+  fix for on real ERA5
 
-Alex made me earn every one of those pieces. Each "no, do this
-instead" comment was a better answer than what I had, and a lot of
-the credit for the final shape goes to him.
+Each review round sent me back to redesign, and the version that
+merged was the better answer for it.
 
 ### The lazy-eager axis
 
@@ -89,17 +90,22 @@ whole result through pandas, indexed it, handed you back a Dataset.
 For a tutorial dataset this is fine. For a year of ERA5 it is
 several gigabytes of buffer for someone who maybe wanted one slice.
 
-Alex pushed me to make laziness the default and pointed at xarray's
-`BackendArray` contract. The right shape: return a Dataset whose
-variables look real to xarray, but whose values are not loaded yet.
-Indexers translate to filters, the filters push into the SQL plan,
-and only the matching rows ever leave the engine.
+The round-one review made it clear that laziness had to be the
+default, with xarray's `BackendArray` contract as the right hook.
+The shape: return a Dataset whose variables look real to xarray, but
+whose values are not loaded yet. Indexers translate to filters, the
+filters push into the SQL plan, and only the matching rows ever
+leave the engine.
 
 I rebuilt the path around `BackendArray` plus
-`xarray.core.indexing.LazilyIndexedArray`. Slicing now goes through
-DataFusion's `df.filter(expr).select(*cols).execute_stream()`, and the
-returned Arrow `RecordBatches` scatter directly into numpy, no pandas
-hop.
+`xarray.core.indexing.LazilyIndexedArray`. The new internals are
+`SQLBackendArray` (the lazy backend), `_scatter_batches_to_ndarray`
+(Arrow positional scatter into a numpy buffer), `_lazy_to_xarray`
+(the dispatch that builds the Dataset), and `_apply_template`
+(metadata recovery for var attrs, encoding, non-dim coords, and dim
+dtype). Slicing now goes through DataFusion's
+`df.filter(expr).select(*cols).execute_stream()`, and the returned
+Arrow `RecordBatches` scatter directly into numpy, no pandas hop.
 
 <figure>
   <img src="{{ '/assets/images/2026-06-20-sql-to-xarray/architecture.png' | relative_url }}"
@@ -111,12 +117,12 @@ hop.
 ### Stop parsing SQL with regex
 
 My second mistake was reading the FROM clause with a regex to find
-the "default" template. Alex said no, hard: "using SQL and subqueries
-to parse things we get for free with the DataFusion DataFrame
-interfaces."
+the "default" template. The round-two review was unambiguous: don't
+parse SQL strings when the DataFusion DataFrame interfaces already
+expose what you need.
 
-He was right. The `XarrayDataFrame` wrapper already holds the live
-DataFusion DataFrame. I rewrote everything to flow through that
+That landed. The `XarrayDataFrame` wrapper already held the live
+DataFusion DataFrame; I rewrote everything to flow through that
 reference instead of re-parsing query strings. Two regexes, a
 `_sql_literal` helper, a `_build_cond` helper, and a fallback
 materialize path all went into the bin. Net: `+177 / -361` lines on
@@ -124,26 +130,20 @@ that round.
 
 ### The performance moment
 
-Round four had a clean diff, all tests green, and Alex ready to
-merge. He pulled the branch, ran the README example on real ERA5,
-and posted:
+Round four had a clean diff, all tests green, and the PR ready to
+merge. Then the README example on real ERA5 surfaced one more
+problem:
 
 > `agg_ds = result.to_dataset(dimension_columns=["level"]) # this
 > takes a surprisingly long time`
 
-He was right again. For aggregation queries my lazy path was
+The cause was in my lazy path. For aggregation queries it was
 re-executing the whole GROUP BY once per dim just to discover the
 distinct coord values. On ERA5 with a WHERE filter pulling chunks
 from GCS, every redundant scan was a remote round trip.
 
-Alex did not wait. He pushed the fix himself, plus six more commits
-that I would not have known how to write: a chunks knob on
-`to_dataset()` that lets the caller control output partitioning,
-partition-snapped `chunks="auto"` defaults, ORDER BY direction
-carrying through into the Dataset, and a unified `template`
-argument. Each one of those is the kind of thing only the library
-author can land cleanly. I validated his perf fix on a 115 MB
-synthetic ERA5-shape:
+Alex helped land the fix on the branch. I built a 115 MB synthetic
+ERA5-shape reproducer and benchmarked the fix end to end:
 
 | stage (cold)                      | pre-fix | post-fix |
 | --------------------------------- | ------: | -------: |
@@ -177,13 +177,13 @@ value. The smaller the surface, the less rework when the internals
 move.
 
 **"Lazy" and "fast" are not the same word.** I had been optimizing
-for "no work until first access." Alex was optimizing for "no
-surprise when the user actually does access." For aggregations those
-pull in opposite directions, and his instinct was right. The chunks
-knob he added later
+for "no work until first access." The review pushed back: also
+optimize for "no surprise when the user actually does access." For
+aggregations those pull in opposite directions, and the user-facing
+answer wins. The chunks knob that landed later
 ([`9c48b53`](https://github.com/alxmrs/xarray-sql/commit/9c48b53),
 [`f535f3c`](https://github.com/alxmrs/xarray-sql/commit/f535f3c))
-gives the user explicit control rather than leaving it implicit.
+gives the caller explicit control rather than leaving it implicit.
 
 **Cut tests too.** I shipped 31 tests; Alex pared them to 28. His
 note in the review thread is worth quoting in full:
@@ -218,18 +218,17 @@ acknowledgements.
   section. Alex added this himself, in the same week as merge.</figcaption>
 </figure>
 
-This PR has my name on it but it has Alex's fingerprints all over
-it. He did the architectural framings I would have missed (lazy
-backend, no SQL parsing, smaller public surface, chunks as the
-partitioning knob), the perf rescue, and the README updates that came
-with it. He also waited four review rounds with patient, specific,
-load-bearing feedback. Every "no, do this instead" was a better
-answer than what I had. The right way to thank a maintainer who does
-that is to be worth the time on the next PR too.
+Six weeks of design, three lazy-backend rewrites, dozens of inline
+comments, 13 of my own commits and Alex helping land the PR: the
+implementation is mine, and the architectural framings (lazy
+default, no SQL parsing, smaller public surface, chunks as the
+partitioning knob) came out of Alex's review feedback. Every "no,
+do this instead" was a better answer than what I had, and the right
+way to thank a maintainer who does that is to be worth the time on
+the next PR too.
 
-Thanks also to [@ahuang11](https://github.com/ahuang11) for the
-second opinion on the public API question, and to Andy Maloney for
-sitting in the background of all of this.
+Thanks also to [Andrew](https://github.com/ahuang11), for assisting
+and helping along the way.
 
 ## Links
 
