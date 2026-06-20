@@ -17,7 +17,7 @@ on the other side, with coordinates, dimensions and attributes intact.
 open since 2025. Today it closed.
 
 <figure>
-  <img src="/assets/images/2026-06-20-sql-to-xarray/issue58-closed.png"
+  <img src="{{ '/assets/images/2026-06-20-sql-to-xarray/issue58-closed.png' | relative_url }}"
        alt="GitHub issue #58 'Inverse problem: Read a table or SQL query into an Xarray Dataset' showing the purple Closed badge and link to PR #167.">
   <figcaption>Issue #58 closed. The title says "inverse problem" for a
   reason.</figcaption>
@@ -53,7 +53,7 @@ construction.
 way.
 
 <figure>
-  <img src="/assets/images/2026-06-20-sql-to-xarray/pr167-merged.png"
+  <img src="{{ '/assets/images/2026-06-20-sql-to-xarray/pr167-merged.png' | relative_url }}"
        alt="GitHub PR #167 header showing 'Add lazy SQL to xarray round-trip via XarrayDataFrame.to_dataset (closes #58)' with the purple Merged badge, merged 20 commits into alxmrs:main from ghostiee-11:feat/lazy-sql-to-xarray.">
   <figcaption>PR #167 merged on 20 Jun 2026 by Alex Merose. 20 commits
   in the end, after a lot of rewriting.</figcaption>
@@ -102,7 +102,7 @@ returned Arrow `RecordBatch`es scatter directly into numpy, no pandas
 hop.
 
 <figure>
-  <img src="/assets/images/2026-06-20-sql-to-xarray/architecture.png"
+  <img src="{{ '/assets/images/2026-06-20-sql-to-xarray/architecture.png' | relative_url }}"
        alt="Architecture diagram: xr.Dataset cube on the left, an arrow to a 'DataFusion + Arrow' database in the middle (with a SQL snippet 'SELECT * FROM air WHERE lat > 30' above it), an arrow to a faded xr.Dataset (lazy) cube on the right, and a row of Arrow RecordBatch glyphs flowing along the bottom.">
   <figcaption>The reverse path: indexer to DataFusion filter, filtered
   rows stream back as Arrow batches, scatter into numpy.</figcaption>
@@ -158,7 +158,7 @@ real ERA5 the gap is bigger because each pre-fix re-scan was a remote
 read.
 
 <figure>
-  <img src="/assets/images/2026-06-20-sql-to-xarray/perf-bars.png"
+  <img src="{{ '/assets/images/2026-06-20-sql-to-xarray/perf-bars.png' | relative_url }}"
        alt="Horizontal bar chart titled 'Cold-run to_dataset() on a 115 MB ERA5-shape synthetic': ctx.sql 374ms pre-fix vs 45ms post-fix, result.to_dataset 684ms vs 192ms, agg_ds['avg_c'].values 88ms vs 0ms, total cold 1146ms vs 237ms, captioned '4.8x faster end to end'.">
   <figcaption>4.8x faster on cold cache. Scatter is free on the
   post-fix because the eager pass already populated the buffer.</figcaption>
@@ -197,7 +197,7 @@ wrote it. The valuable tests prove the contract holds for the user,
 not the path I happened to take.
 
 <figure>
-  <img src="/assets/images/2026-06-20-sql-to-xarray/all-checks-green.png"
+  <img src="{{ '/assets/images/2026-06-20-sql-to-xarray/all-checks-green.png' | relative_url }}"
        alt="GitHub PR view: 'alxmrs merged commit d5814b5 into alxmrs:main' with 12 checks passed list including python 3.10/3.11/3.12/3.13 tests, lint, Windows/macOS/Linux builds, and Rust Lint and Test.">
   <figcaption>Merge commit d5814b5. All 12 CI checks green.</figcaption>
 </figure>
@@ -212,7 +212,7 @@ been pestering for six weeks decides you belong in the
 acknowledgements.
 
 <figure>
-  <img src="/assets/images/2026-06-20-sql-to-xarray/sponsors-attribution.png"
+  <img src="{{ '/assets/images/2026-06-20-sql-to-xarray/sponsors-attribution.png' | relative_url }}"
        alt="Screenshot of the xarray-sql README's 'Sponsors & Contributors' section, with the final bullet reading 'Aman Kumar for spending a considerable amount of his GSoC internship contributing to this project.'">
   <figcaption>The bottom line of the Sponsors &amp; Contributors
   section. Alex added this himself, in the same week as merge.</figcaption>
