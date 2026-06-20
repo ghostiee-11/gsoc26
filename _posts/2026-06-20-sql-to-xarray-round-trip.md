@@ -3,7 +3,7 @@ title: "Goal 3 is in: SQL queries round-trip back to xarray"
 date: 2026-06-20 18:00:00 +0530
 categories: [gsoc, holoviz, xarray-sql]
 tags: [xarray-sql, datafusion, arrow, lazy-evaluation, gsoc-2026]
-excerpt: "Six weeks, four review rounds, over a hundred inline comments, two architectural rewrites. xarray-sql now reconstructs an xr.Dataset from a SQL query result, with coordinates and attrs intact."
+excerpt: "Six weeks, four review rounds, dozens of inline comments, two architectural rewrites. xarray-sql now reconstructs an xr.Dataset from a SQL query result, with coordinates and attrs intact."
 header:
   overlay_image: /assets/images/2026-06-20-sql-to-xarray/hero.png
   overlay_filter: 0.45
@@ -56,7 +56,7 @@ way.
   <img src="{{ '/assets/images/2026-06-20-sql-to-xarray/pr167-merged.png' | relative_url }}"
        alt="GitHub PR #167 header showing 'Add lazy SQL to xarray round-trip via XarrayDataFrame.to_dataset (closes #58)' with the purple Merged badge, merged 20 commits into alxmrs:main from ghostiee-11:feat/lazy-sql-to-xarray.">
   <figcaption>PR #167 merged on 20 Jun 2026 by Alex Merose. 20 commits
-  in the end, after a lot of rewriting.</figcaption>
+  in the end, after several rewrites.</figcaption>
 </figure>
 
 ## What was hard
@@ -71,7 +71,7 @@ Because four lines is the part that works on toy data. Everything
 else is the part that makes a library. By the end the PR had:
 
 - **20 commits**, including two architectural rewrites
-- **100+ inline review comments** across four rounds with Alex
+- **Dozens of inline review comments** across four rounds with Alex
 - **7 commits Alex pushed directly to the branch** when he ran out of
   patience explaining the chunks knob and just built it himself
 - **Three full rewrites** of the lazy backend
@@ -86,7 +86,7 @@ the credit for the final shape goes to him.
 
 My first draft was eager. You called `.to_dataset()`, it pulled the
 whole result through pandas, indexed it, handed you back a Dataset.
-For a 30 KB tutorial dataset this is fine. For a year of ERA5 it is
+For a tutorial dataset this is fine. For a year of ERA5 it is
 several gigabytes of buffer for someone who maybe wanted one slice.
 
 Alex pushed me to make laziness the default and pointed at xarray's
@@ -202,7 +202,7 @@ not the path I happened to take.
   <figcaption>Merge commit d5814b5. All 12 CI checks green.</figcaption>
 </figure>
 
-## Thanks, and a really kind credit
+## Thanks, and a credit I did not expect
 
 The day before merge, Alex added me to the Sponsors & Contributors
 section of the README. That is the kind of thing maintainers do not
