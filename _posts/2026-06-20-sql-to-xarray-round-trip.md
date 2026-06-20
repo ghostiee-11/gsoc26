@@ -45,7 +45,7 @@ region = out["air"].isel(time=0).values           # only this slice is read
 dtype, and attrs. The data variables are backed by a custom
 `BackendArray`; xarray indexers translate to DataFusion `filter`
 expressions, so only the requested region is materialized through
-Arrow `RecordBatch`es. Aggregations follow the same surface but
+Arrow `RecordBatches`. Aggregations follow the same surface but
 materialize once eagerly, because their result is small by
 construction.
 
@@ -98,7 +98,7 @@ and only the matching rows ever leave the engine.
 I rebuilt the path around `BackendArray` plus
 `xarray.core.indexing.LazilyIndexedArray`. Slicing now goes through
 DataFusion's `df.filter(expr).select(*cols).execute_stream()`, and the
-returned Arrow `RecordBatch`es scatter directly into numpy, no pandas
+returned Arrow `RecordBatches` scatter directly into numpy, no pandas
 hop.
 
 <figure>
